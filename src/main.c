@@ -1,18 +1,37 @@
 #include <stdio.h>
 
-#include "math.h"
+#include "ray.h"
 
 int main(int argc, char *argv[])
 {
-        struct fvec3 vec = {
-                .x = 2.0,
-                .y = 3.0,
-                .z = 4.0
+        struct ray ray = {
+                .origin = {
+                        .x = 1.0,
+                        .y = -2.0,
+                        .z = -1
+                },
+                .direction = {
+                        .x = 1.0,
+                        .y = 2.0,
+                        .z = 4.0
+                }
         };
 
-        fvec3_normalize(&vec);
-        fvec3_print(&vec);
+        ray.direction = fvec3_normalize(&ray.direction);
+        struct sphere sphere = {
+                .origin = {
+                        .x = 3.0,
+                        .y = 0.0,
+                        .z = 5.0
+                },
+                .radius = 3.0
+        };
 
-        printf("Test\n");
+        struct intersection intersect;
+        if (ray_intersect_with_sphere(&ray, &sphere, &intersect)) {
+                fvec3_print(&intersect.point);
+                fvec3_print(&intersect.normal);
+        }
+
         return 0;
 }

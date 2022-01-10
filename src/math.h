@@ -1,8 +1,11 @@
 #ifndef MATH_H
 #define MATH_H
 
+#include <stdbool.h>
+
 #define PI 3.14159265359
 #define PI_INVERSE 0.31830988618
+#define E 0.00001
 
 struct fvec3 {
         double x;
@@ -10,13 +13,15 @@ struct fvec3 {
         double z;
 };
 
-double fvec3_len_squared(const struct fvec3 *vec);
-double fvec3_dot(const struct fvec3 *vec1, const struct fvec3 *vec2);
-struct fvec3 fvec3_add(const struct fvec3 *vec1, const struct fvec3 *vec2);
-struct fvec3 fvec3_sub(const struct fvec3 *vec1, const struct fvec3 *vec2);
-struct fvec3 fvec3_mult(const struct fvec3 *vec, double scalar);
-struct fvec3 fvec3_negate(const struct fvec3 *vec1);
-struct fvec3 fvec3_normalize(const struct fvec3 *vec);
-void fvec3_print(const struct fvec3 *vec);
+double fvec3_len_squared(const struct fvec3*);
+double fvec3_dot(const struct fvec3*, const struct fvec3*);
+bool fvec3_is_null(const struct fvec3*);
+void fvec3_add(struct fvec3*, const struct fvec3*, const struct fvec3*);
+void fvec3_sub(struct fvec3*, const struct fvec3*, const struct fvec3*);
+void fvec3_mult(struct fvec3*, const struct fvec3*, double);
+void fvec3_cross(struct fvec3*, const struct fvec3*, const struct fvec3*);
+void fvec3_negate(struct fvec3*, const struct fvec3*);
+void fvec3_normalize(struct fvec3*, const struct fvec3*);
+void fvec3_print(const struct fvec3*);
 
 #endif

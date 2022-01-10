@@ -1,17 +1,27 @@
 #include "ray.h"
 
+#include "geometry.h"
+
 #include <math.h>
 #include <stdio.h>
 
-bool ray_intersect_with_sphere(const struct ray *ray,
-                               const struct sphere *sphere,
-                               struct intersection *intersection)
+void ray_get_point(struct fvec3 *out, const struct ray *ray, double t)
+{
+        struct fvec3 intersect_dir;
+        fvec3_mult(&intersect_dir, &ray->direction, t);
+        fvec3_add(out, &ray->origin, &intersect_dir);
+}
+
+bool ray_intersect_with_sphere(struct intersect *intersect,
+                               const struct ray *ray,
+                               const struct sphere *sphere)
 {
         /* precomputed constants */
         double sr2 = sphere->radius * sphere->radius;
 
         /* 1. find distance squared between ray origin and center */
-        struct fvec3 oc = fvec3_sub(&sphere->origin, &ray->origin);
+        struct fvec3 oc;
+        fvec3_sub(&oc, &sphere->origin, &ray->origin);
         double l2oc = fvec3_len_squared(&oc);
         bool in_sphere = l2oc < sr2;
 
@@ -40,14 +50,56 @@ bool ray_intersect_with_sphere(const struct ray *ray,
         }
 
         /* 7. find intersection point */
-        struct fvec3 intersect_dir = fvec3_mult(&ray->direction, t);
-        intersection->point = fvec3_add(&ray->origin, &intersect_dir);
+        ray_get_point(&intersect->point, ray, t);
 
         /* 8. find intersection normal */
-        double s = 1.0 / sphere->radius;
-        intersection->normal.x = (intersection->point.x - sphere->origin.x) * s;
-        intersection->normal.y = (intersection->point.y - sphere->origin.y) * s;
-        intersection->normal.z = (intersection->point.z - sphere->origin.z) * s;
+        double sri = 1.0 / sphere->radius;
+        intersect->normal.x = (intersect->point.x - sphere->origin.x) * sri;
+        intersect->normal.y = (intersect->point.y - sphere->origin.y) * sri;
+        intersect->normal.z = (intersect->point.z - sphere->origin.z) * sri;
+
+        /* now use spherical inverse mapping to find texture coordinates */
+        struct fvec3 tmp;
+        fvec3_negate(&tmp, &intersect->normal);
+        double phi = fvec3_dot(&tmp, &sphere->pole);
+        intersect->v = phi * PI_INVERSE;
+        intersect->u = acos(fvec3_dot(&sphere->equator, &intersect->normal)
+                            / sin(phi)) * 0.5 * PI_INVERSE;
+        fvec3_cross(&tmp, &sphere->pole, &sphere->equator);
+        /* invert u if necessary */
+        if (fvec3_dot(&tmp, &intersect->normal) >= 0.0) {
+                intersect->u = 1 - intersect->u;
+        }
+
+        return true;
+}
+
+bool ray_intersect_with_plane(struct intersect *intersect,
+                              const struct ray *ray,
+                              const struct plane *plane)
+{
+        /* 1. calculate d and compare it to zero (using epsilon) */
+        double vd = fvec3_dot(&plane->normal, &ray->direction);
+        if (vd < E) {
+                return false;
+        }
+
+        /* 2. calculate v0 and t and compare t to zero */
+        double v0 = -(fvec3_dot(&plane->normal, &ray->origin) + plane->d);
+        double t = v0 / vd;
+        if (t <= 0) {
+                return false;
+        }
+
+        /* 3. compute intersection point */
+        ray_get_point(&intersect->point, ray, t);
+
+        /* 4. compare v0 to zero and reverse normal */
+        if (vd >= 0.0) {
+                fvec3_negate(&intersect->normal, &plane->normal);
+        } else {
+                intersect->normal = plane->normal;
+        }
 
         return true;
 }

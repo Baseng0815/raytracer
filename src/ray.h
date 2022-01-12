@@ -22,12 +22,15 @@ struct intersect {
 
 void ray_get_point(struct fvec3*, const struct ray*, double);
 
-bool ray_intersect_with_sphere(struct intersect *intersect,
-                               const struct ray *ray,
-                               const struct sphere *sphere);
+bool ray_intersect_with_sphere(struct intersect*,
+                               const struct ray*,
+                               const struct sphere*);
 
-bool ray_intersect_with_plane(struct intersect *intersect,
-                              const struct ray *ray,
-                              const struct plane *sphere);
+bool ray_intersect_with_plane(struct intersect*,
+                              const struct ray*,
+                              const struct plane*);
+
+/* perfect specular reflection */
+void ray_reflect(struct ray*, const struct ray*, const struct intersect*);
 
 #endif

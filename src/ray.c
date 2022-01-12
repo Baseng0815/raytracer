@@ -103,3 +103,15 @@ bool ray_intersect_with_plane(struct intersect *intersect,
 
         return true;
 }
+
+void ray_reflect(struct ray *out,
+                 const struct ray *ray,
+                 const struct intersect *intersect)
+{
+        out->origin = intersect->point;
+        fvec3_mult(&out->direction,
+                   &intersect->normal,
+                   2.0 * fvec3_dot(&intersect->normal, &ray->direction));
+        fvec3_sub(&out->direction,
+                  &ray->direction, &out->direction);
+}

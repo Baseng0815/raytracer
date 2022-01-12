@@ -65,5 +65,10 @@ int main(int argc, char *argv[])
                 printf("u=%f, v=%f\n", intersect.u, intersect.v);
         }
 
+        struct ray reflected_ray;
+        printf("reflected ray direction: ");
+        ray_reflect(&reflected_ray, &ray, &intersect);
+        fvec3_print(&reflected_ray.direction);
+
         return 0;
 }

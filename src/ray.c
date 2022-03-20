@@ -29,7 +29,7 @@ bool ray_intersect_with_sphere(struct intersect *intersect,
         double tca = fvec3_dot(&oc, &ray->direction);
 
         /* 3. test if ray is outside and points away from sphere */
-        if (!in_sphere && tca < 0) {
+        if (!in_sphere && tca < 0.0) {
                 return false;
         }
 
@@ -37,7 +37,7 @@ bool ray_intersect_with_sphere(struct intersect *intersect,
         double t2hc = sr2 - l2oc + tca * tca;
 
         /* 5. test if square is negative */
-        if (!in_sphere && t2hc < 0) {
+        if (!in_sphere && t2hc < 0.0) {
                 return false;
         }
 
@@ -68,7 +68,7 @@ bool ray_intersect_with_sphere(struct intersect *intersect,
         fvec3_cross(&tmp, &sphere->pole, &sphere->equator);
         /* invert u if necessary */
         if (fvec3_dot(&tmp, &intersect->normal) >= 0.0) {
-                intersect->u = 1 - intersect->u;
+                intersect->u = 1.0 - intersect->u;
         }
 
         return true;
@@ -114,4 +114,20 @@ void ray_reflect(struct ray *out,
                    2.0 * fvec3_dot(&intersect->normal, &ray->direction));
         fvec3_sub(&out->direction,
                   &ray->direction, &out->direction);
+}
+
+void ray_refract(struct ray *out,
+                 const struct ray *ray,
+                 const struct intersect *intersect,
+                 double nit)
+{
+        out->origin = intersect->point;
+        /* nit = st/si = n1/2 */
+        double ci = fvec3_dot(&ray->direction, &intersect->normal);
+        double si = sin(acos(ci));
+
+        fvec3_mult(&out->direction, &ray->direction, nit);
+        struct fvec3 tmp;
+        fvec3_mult(&tmp, &intersect->normal, nit*ci - sqrt(1.0-nit*nit*si*si));
+        fvec3_add(&out->direction, &out->direction, &tmp);
 }

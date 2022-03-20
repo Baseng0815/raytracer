@@ -33,4 +33,10 @@ bool ray_intersect_with_plane(struct intersect*,
 /* perfect specular reflection */
 void ray_reflect(struct ray*, const struct ray*, const struct intersect*);
 
+/* perfect specular transmission */
+void ray_refract(struct ray*,
+                 const struct ray*,
+                 const struct intersect*,
+                 double);
+
 #endif

@@ -23,3 +23,6 @@ apply surface physics (recursive algorithm)
 - casting rays creates a ray tree
     - each ray has a contribution (depending on surface physics)
     - we stop once a ray either leaves the scene or its contribution becomes too small (adaptive tree-depth control, can be wrong though)
+- aliasing: sampling a smooth curve with discrete frequency (the sample frequency) can produce unwanted effects
+    - e.g. sampling a high-frequency wave with a low-frequency generates a low-frequency
+    ,- anti-aliasing with supersampling (sampling more than once per pixel to reduce jaggies, multiple strategies (adaptive, stochastic,...))

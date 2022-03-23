@@ -3,6 +3,13 @@
 #include <math.h>
 #include <stdio.h>
 
+struct fvec3 fvec3_left     = { .x = -1.0 };
+struct fvec3 fvec3_right    = { .x = 1.0 };
+struct fvec3 fvec3_up       = { .y = 1.0 };
+struct fvec3 fvec3_down     = { .y = -1.0 };
+struct fvec3 fvec3_front    = { .z = 1.0 };
+struct fvec3 fvec3_back     = { .z = -1.0 };
+
 double fvec3_len_squared(const struct fvec3 *vec)
 {
         return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;

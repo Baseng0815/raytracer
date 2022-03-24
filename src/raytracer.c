@@ -1,6 +1,7 @@
 #include "raytracer.h"
 
 #include "ray.h"
+#include "image.h"
 
 #include <stdio.h>
 

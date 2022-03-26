@@ -20,6 +20,7 @@ extern struct fvec3 fvec3_down;
 extern struct fvec3 fvec3_front;
 extern struct fvec3 fvec3_back;
 
+double fmax(double, double);
 double fvec3_len_squared(const struct fvec3*);
 double fvec3_dot(const struct fvec3*, const struct fvec3*);
 bool fvec3_is_null(const struct fvec3*);

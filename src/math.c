@@ -10,6 +10,11 @@ struct fvec3 fvec3_down     = { .y = -1.0 };
 struct fvec3 fvec3_front    = { .z = 1.0 };
 struct fvec3 fvec3_back     = { .z = -1.0 };
 
+double fmax(double a, double b)
+{
+        return (a > b ? a : b);
+}
+
 double fvec3_len_squared(const struct fvec3 *vec)
 {
         return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;

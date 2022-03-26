@@ -17,11 +17,19 @@ void raytracer_render(const struct scene *scene, int iw, int ih, int sw, int sh)
         struct image_pixel *pix = malloc(sizeof(struct image_pixel) * iw * ih);
         memset(pix, 0, sizeof(struct image_pixel) * iw * ih);
 
+        struct fvec3 light_dir = {
+                .x = -1.0,
+                .y = -1.0,
+                .z = -1.0
+        };
+
+        fvec3_normalize(&light_dir, &light_dir);
+
         for (int y = 0; y < ih; y++) {
                 for (int x = 0; x < iw; x++) {
                         /* generate ray through pixel center */
-                        double wx = (x - iw / 2.0) * pw + (pw * 0.5);
-                        double wy = (y - ih / 2.0) * ph + (ph * 0.5);
+                        double wx = ((x - iw / 2.0) + 0.5) * pw;
+                        double wy = ((y - ih / 2.0) + 0.5) * ph;
 
                         struct ray ray;
                         ray.direction.x = wx;
@@ -38,7 +46,8 @@ void raytracer_render(const struct scene *scene, int iw, int ih, int sw, int sh)
                                 struct intersect intersect;
                                 const struct sphere *s = &scene->spheres[i];
                                 if (ray_intersect_with_sphere(&intersect, &ray, s)) {
-                                        pix[y * iw + x].r = 255;
+                                        double a = fvec3_dot(&light_dir, &intersect.normal);
+                                        pix[y * iw + x].r = fmax(255.0 * a, 0.0);
                                 } else {
                                         pix[y * iw + x].r = 0;
                                 }

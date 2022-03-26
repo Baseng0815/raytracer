@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
                 .sphere_count = 1
         };
 
-        raytracer_render(&scene, 100, 100, 2, 2);
+        raytracer_render(&scene, 1024, 1024, 2, 2);
 
         return 0;
 }

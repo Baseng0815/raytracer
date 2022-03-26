@@ -1,7 +1,7 @@
 # Raytracer
 
 This program offers implementations of multiple algorithms as presented in
-[http://bit.ly/AITRT]("An Introduction To Ray Tracing").
+["An Introduction To Ray Tracing"](http://bit.ly/AITRT).
 
 ## Keywords and notes
 

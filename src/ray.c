@@ -44,9 +44,9 @@ bool ray_intersect_with_sphere(struct intersect *intersect,
         /* 6. calculate intersection distance */
         double t;
         if (!in_sphere) {
-                t = tca - sqrt(t2hc);
-        } else {
                 t = tca + sqrt(t2hc);
+        } else {
+                t = tca - sqrt(t2hc);
         }
 
         /* 7. find intersection point */

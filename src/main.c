@@ -6,9 +6,10 @@
 
 #include "image.h"
 
+#include "color.h"
+
 int main(int argc, char *argv[])
 {
-
         struct sphere spheres[1];
         spheres[0].equator = fvec3_right;
         spheres[0].pole = fvec3_up;
@@ -19,10 +20,17 @@ int main(int argc, char *argv[])
 
         struct scene scene = {
                 .spheres = spheres,
-                .sphere_count = 1
+                .sphere_count = 1,
+                .sw = 2.0,
+                .sh = 2.0
         };
 
-        raytracer_render(&scene, 1024, 1024, 2, 2);
+        spectrum_set_intensity(&scene.background, 700.0, 0.4);
+        spectrum_set_intensity(&scene.background, 700.0, 0.6);
+        spectrum_set_intensity(&scene.background, 700.0, 0.2);
+        print
+
+        raytracer_render(&scene, 1024, 1024);
 
         return 0;
 }

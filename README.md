@@ -26,3 +26,12 @@ apply surface physics (recursive algorithm)
 - aliasing: sampling a smooth curve with discrete frequency (the sample frequency) can produce unwanted effects
     - e.g. sampling a high-frequency wave with a low-frequency generates a low-frequency wave
     - anti-aliasing with supersampling (sampling more than once per pixel to reduce jaggies, multiple strategies (adaptive, stochastic,...))
+- ray colors can be represented through a light frequency spectrum, but we'll assign a single particular wavelength to each ray to make calculations simpler
+    - to know the amplitude of many wavelengths, we need to send off many rays
+- a blue couch appears blue because blue photons have just the right energy to be absorbed and reradiated while other photons are absorbed and remain as heat
+- light interactions:
+    - perfect specular reflection: photons arriving along a ray don't interact with the surface and are reflected (angle of reflection = angle of incidence)
+    - perfect diffuse reflection: photons arriving along a ray interact with the surface, are absorbed and rescattered equally in all direction
+    - perfect specular transmission: photons arriving along a ray are transmitted *through* the object and experience bending related to the medias index of refraction
+    - perfect diffuse transmission: photons arriving along a ray interact with the material and are scattered equally in all directions
+    - total internal reflection: light trying to pass from a dense medium to a less-dense medium below a certain angle glances off the interface instead

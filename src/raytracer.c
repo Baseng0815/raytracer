@@ -49,7 +49,6 @@ void raytracer_render(const struct scene *scene, int iw, int ih)
                         struct spectrum ray_color;
                         solve_rendering_equation(&ray_color, &ray, scene);
                         pix[y * iw + x].r = spectrum_get_intensity(&ray_color, 700.0);
-                        printf("%d\n", pix[y * iw + x].r);
                         pix[y * iw + x].g = spectrum_get_intensity(&ray_color, 540.0);
                         pix[y * iw + x].b = spectrum_get_intensity(&ray_color, 460.0);
                 }

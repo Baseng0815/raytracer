@@ -13,12 +13,18 @@ struct fvec3 {
         double z;
 };
 
+struct fmat3 {
+        double v[3][3];
+};
+
 extern struct fvec3 fvec3_left;
 extern struct fvec3 fvec3_right;
 extern struct fvec3 fvec3_up;
 extern struct fvec3 fvec3_down;
 extern struct fvec3 fvec3_front;
 extern struct fvec3 fvec3_back;
+
+extern struct fmat3 xyztorgb;
 
 double fmax(double, double);
 double fvec3_len_squared(const struct fvec3*);
@@ -31,5 +37,8 @@ void fvec3_cross(struct fvec3*, const struct fvec3*, const struct fvec3*);
 void fvec3_negate(struct fvec3*, const struct fvec3*);
 void fvec3_normalize(struct fvec3*, const struct fvec3*);
 void fvec3_print(const struct fvec3*);
+
+void fmat3_mult(struct fmat3*, const struct fmat3*, const struct fmat3*);
+void fmat3_vecmult(struct fvec3*, const struct fmat3*, const struct fvec3*);
 
 #endif

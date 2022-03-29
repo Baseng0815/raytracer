@@ -10,6 +10,14 @@ struct fvec3 fvec3_down     = { .y = -1.0 };
 struct fvec3 fvec3_front    = { .z = 1.0 };
 struct fvec3 fvec3_back     = { .z = -1.0 };
 
+struct fmat3 xyztorgb = {
+        .v = {
+                { 3.2404542, -1.5371385, -0.4985314 },
+                { -0.9692660, 1.8760108, 0.0415560 },
+                { 0.0556434, -0.2040259, 1.0572252 }
+        }
+};
+
 double fmax(double a, double b)
 {
         return (a > b ? a : b);
@@ -86,4 +94,28 @@ void fvec3_normalize(struct fvec3 *out,
 void fvec3_print(const struct fvec3 *vec)
 {
         printf("[%f %f %f]\n", vec->x, vec->y, vec->z);
+}
+
+void fmat3_mult(struct fmat3 *out,
+                const struct fmat3 *m1,
+                const struct fmat3 *m2)
+{
+        for (size_t row = 0; row < 3; row++) {
+                for (size_t col = 0; col < 3; col++) {
+                        double sum = 0.0;
+                        for (size_t i = 0; i < 3; i++) {
+                                sum += m1->v[row][i] * m2->v[i][col];
+                        }
+                        out->v[row][col] = sum;
+                }
+        }
+}
+
+void fmat3_vecmult(struct fvec3 *out,
+                   const struct fmat3 *m,
+                   const struct fvec3 *v)
+{
+        out->x = m->v[0][0] * v->x + m->v[0][1] * v->y + m->v[0][2] * v->z;
+        out->y = m->v[1][0] * v->x + m->v[1][1] * v->y + m->v[1][2] * v->z;
+        out->z = m->v[2][0] * v->x + m->v[2][1] * v->y + m->v[2][2] * v->z;
 }

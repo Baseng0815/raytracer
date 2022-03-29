@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+from math import *
+
+x31 = lambda l: 1.065 * exp(-1/2 * ((l-595.8)/33.33)**2) + 0.366 * exp(-1/2 * ((l-446.8)/19.44)**2)
+y31 = lambda l: 1.014 * exp(-1/2 * ((log(l)-log(556.3))/0.075)**2)
+z31 = lambda l: 1.839 * exp(-1/2 * ((log(l)-log(449.8))/0.051)**2)
+
+print('x31')
+for l in range(400, 800, 10):
+    print(x31(l))
+print('y31')
+for l in range(400, 800, 10):
+    print(y31(l))
+print('z31')
+for l in range(400, 800, 10):
+    print(z31(l))

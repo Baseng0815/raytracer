@@ -4,6 +4,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <math.h>
 
 struct spectrum d65 = {
         .values = {
@@ -45,8 +46,7 @@ struct spectrum y31 = {
 };
 
 struct spectrum z31 = {
-        .values =
-        {
+        .values = {
                 0.1303523289655708, 0.3531825622611203, 0.7452316867385698, 1.2456282686702616, 1.675214433940518,
                 1.8389301395865598, 1.6695676115174807, 1.2690218862197877, 0.816651772643258, 0.44958902868804174,
                 0.21378609891162456, 0.08859268966558566, 0.032259921424163084, 0.010401949562587616, 0.0029912970053788813,
@@ -57,6 +57,15 @@ struct spectrum z31 = {
                 2.76414537989e-22, 1.977869858668919e-23, 1.3711532547899499e-24, 9.224626182562919e-26, 6.0321498569088684e-27
         }
 };
+
+static struct fmat3 xyztorgb = {
+        .v = {
+                { 3.2406255, -1.5372080, -0.4986286 },
+                { -0.9689307, 1.8757561, 0.0415175 },
+                { 0.0557101, -0.2040211, 1.0569959 }
+        }
+};
+
 
 void spectrum_set_intensity(struct spectrum *s, double w, double intensity)
 {
@@ -128,4 +137,26 @@ void spectrum_to_xyz(struct fvec3 *out, const struct spectrum *s)
         out->y = spectrum_integrate(&mult);
         spectrum_multiply(&mult, &z31, s);
         out->z = spectrum_integrate(&mult);
+
+        // fix Y at 1.0
+        fvec3_mult(out, out, 1.0 / out->y);
+}
+
+void xyz_to_rgb(struct fvec3 *rgb, const struct fvec3 *xyz)
+{
+        // linear conversion
+        fmat3_vecmult(rgb, &xyztorgb, xyz);
+
+        // apply gamma correction
+        rgb->x = rgb->x <= 0.0031308 ? (12.92 * rgb->x)
+                : (1.055 * powf(rgb->x, 1/2.4) - 0.055);
+        rgb->y = rgb->y <= 0.0031308 ? (12.92 * rgb->y)
+                : (1.055 * powf(rgb->y, 1/2.4) - 0.055);
+        rgb->z = rgb->z <= 0.0031308 ? (12.92 * rgb->z)
+                : (1.055 * powf(rgb->z, 1/2.4) - 0.055);
+
+        // clip to [0.0; 1.0]
+        rgb->x = rgb->x < 0.0 ? 0.0 : rgb->x > 1.0 ? 1.0 : rgb->x;
+        rgb->y = rgb->y < 0.0 ? 0.0 : rgb->y > 1.0 ? 1.0 : rgb->y;
+        rgb->z = rgb->z < 0.0 ? 0.0 : rgb->z > 1.0 ? 1.0 : rgb->z;
 }

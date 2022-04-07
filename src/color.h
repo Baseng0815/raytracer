@@ -29,4 +29,6 @@ void spectrum_add(struct spectrum*,
 double spectrum_integrate(const struct spectrum*);
 void spectrum_to_xyz(struct fvec3*, const struct spectrum*);
 
+void xyz_to_rgb(struct fvec3*, const struct fvec3*);
+
 #endif

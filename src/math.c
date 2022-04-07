@@ -10,14 +10,6 @@ struct fvec3 fvec3_down     = { .y = -1.0 };
 struct fvec3 fvec3_front    = { .z = 1.0 };
 struct fvec3 fvec3_back     = { .z = -1.0 };
 
-struct fmat3 xyztorgb = {
-        .v = {
-                { 3.2404542, -1.5371385, -0.4985314 },
-                { -0.9692660, 1.8760108, 0.0415560 },
-                { 0.0556434, -0.2040259, 1.0572252 }
-        }
-};
-
 double fmax(double a, double b)
 {
         return (a > b ? a : b);

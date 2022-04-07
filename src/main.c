@@ -15,35 +15,12 @@ int main(int argc, char *argv[])
         printf("%f %f %f\n", xyz.x, xyz.y, xyz.z);
 
         struct fvec3 rgb;
-        fmat3_vecmult(&rgb, &xyztorgb, &xyz);
+        xyz_to_rgb(&rgb, &xyz);
         printf("%f %f %f\n", rgb.x, rgb.y, rgb.z);
+        printf("%f %f %f\n", rgb.x * 255, rgb.y * 255, rgb.z * 255);
 
         return 0;
-        struct fmat3 m = {
-                {
-                        {1.0, 2.0, 3.0},
-                        {4.0, 5.0, 6.0},
-                        {7.0, 8.0, 9.0}
-                }
-        };
 
-        struct fmat3 out;
-        fmat3_mult(&out, &m, &m);
-        for (size_t row = 0; row < 3; row++) {
-                printf("%f %f %f\n", out.v[row][0], out.v[row][1], out.v[row][2]);
-        }
-
-        struct fvec3 v = {
-                .x = 1.0,
-                .y = 1.0,
-                .z = 1.0
-        };
-
-        struct fvec3 f;
-        fmat3_vecmult(&f, &out, &v);
-        printf("%f %f %f\n", f.x, f.y, f.z);
-
-        return 0;
         struct sphere spheres[1];
         spheres[0].equator = fvec3_right;
         spheres[0].pole = fvec3_up;

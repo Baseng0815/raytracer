@@ -6,9 +6,6 @@
 #include "math.h"
 #include "color.h"
 
-struct sphere;
-struct plane;
-
 struct light {
         struct fvec3 position;
         struct spectrum spectrum;

@@ -2,8 +2,11 @@
 #define GEOMETRY_H
 
 #include "math.h"
+#include "material.h"
 
 struct sphere {
+        const struct material *material;
+
         struct fvec3 origin;
         double radius;
         /* texture mapping

@@ -10,17 +10,6 @@
 
 int main(int argc, char *argv[])
 {
-        struct fvec3 xyz;
-        spectrum_to_xyz(&xyz, &d65);
-        printf("%f %f %f\n", xyz.x, xyz.y, xyz.z);
-
-        struct fvec3 rgb;
-        xyz_to_rgb(&rgb, &xyz);
-        printf("%f %f %f\n", rgb.x, rgb.y, rgb.z);
-        printf("%f %f %f\n", rgb.x * 255, rgb.y * 255, rgb.z * 255);
-
-        return 0;
-
         struct sphere spheres[1];
         spheres[0].equator = fvec3_right;
         spheres[0].pole = fvec3_up;
@@ -32,14 +21,10 @@ int main(int argc, char *argv[])
         struct scene scene = {
                 .spheres = spheres,
                 .sphere_count = 1,
+                .background = d65,
                 .sw = 2.0,
                 .sh = 2.0
         };
-
-        spectrum_set_intensity(&scene.background, 700.0, 0.4);
-        spectrum_set_intensity(&scene.background, 700.0, 0.6);
-        spectrum_set_intensity(&scene.background, 700.0, 0.2);
-        printf("%f\n", spectrum_integrate(&d65));
 
         raytracer_render(&scene, 1024, 1024);
 

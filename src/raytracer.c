@@ -48,9 +48,12 @@ void raytracer_render(const struct scene *scene, int iw, int ih)
 
                         struct spectrum ray_color;
                         solve_rendering_equation(&ray_color, &ray, scene);
-                        pix[y * iw + x].r = spectrum_get_intensity(&ray_color, 700.0);
-                        pix[y * iw + x].g = spectrum_get_intensity(&ray_color, 540.0);
-                        pix[y * iw + x].b = spectrum_get_intensity(&ray_color, 460.0);
+                        struct fvec3 rgb;
+                        spectrum_to_xyz(&rgb, &ray_color);
+                        xyz_to_rgb(&rgb, &rgb);
+                        pix[y * iw + x].r = rgb.x * 255;
+                        pix[y * iw + x].g = rgb.y * 255;
+                        pix[y * iw + x].b = rgb.z * 255;
                 }
         }
 
@@ -63,9 +66,6 @@ static void solve_rendering_equation(struct spectrum *ray_color,
                                      const struct ray *ray,
                                      const struct scene *scene)
 {
-        spectrum_set_intensity(ray_color, 700.0, 0.2);
-        return;
-
         double closest_distance = DBL_MAX;
         struct intersect closest_intersect;
         const struct sphere *closest_sphere = NULL;

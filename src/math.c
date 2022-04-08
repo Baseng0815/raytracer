@@ -15,6 +15,21 @@ double fmax(double a, double b)
         return (a > b ? a : b);
 }
 
+double interpolate_array(const double *arr, double index)
+{
+        if (index - (size_t)index < 0.00001) {
+                // no interpolation necessary
+                return arr[(size_t)index];
+        }
+
+        // interpolate
+        double lower = arr[(size_t)(index + 0.0)];
+        double upper = arr[(size_t)(index + 1.0)];
+
+        double blend = index - (size_t)index;
+        return upper * blend + lower * (1.0 - blend);
+}
+
 double fvec3_len_squared(const struct fvec3 *vec)
 {
         return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;

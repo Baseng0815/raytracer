@@ -3,6 +3,7 @@
 #include "ray.h"
 #include "image.h"
 #include "geometry.h"
+#include "color.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -12,6 +13,11 @@
 static void solve_rendering_equation(struct spectrum*,
                                      const struct ray*,
                                      const struct scene*);
+
+void raytracer_build_tables(void)
+{
+        color_build_tables();
+}
 
 void raytracer_render(const struct scene *scene, int iw, int ih)
 {

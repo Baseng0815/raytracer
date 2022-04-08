@@ -26,6 +26,7 @@ struct scene {
         double sh;
 };
 
+void raytracer_build_tables(void);
 void raytracer_render(const struct scene*, int iw, int ih);
 
 #endif

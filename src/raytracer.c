@@ -94,7 +94,7 @@ static void solve_rendering_equation(struct spectrum *ray_color,
 
         if (!closest_sphere) {
                 // no intersection detected - color with background
-                *ray_color = scene->background;
+                *ray_color = *scene->background;
                 return;
         }
 

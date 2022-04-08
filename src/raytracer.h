@@ -12,11 +12,11 @@ struct light {
 };
 
 struct scene {
-        struct sphere *spheres;
-        struct plane *planes;
-        struct light *lights;
+        const struct sphere *spheres;
+        const struct plane *planes;
+        const struct light *lights;
 
-        struct spectrum background;
+        const struct spectrum *background;
 
         size_t sphere_count;
         size_t plane_count;

@@ -8,7 +8,7 @@
 
 struct light {
         struct fvec3 position;
-        struct spectrum spectrum;
+        const struct spectrum *spectrum;
 };
 
 struct scene {

@@ -8,6 +8,10 @@ struct material mat_1 = {
         .fdr = &spectrum_greenish
 };
 
+struct material mat_white = {
+        .fdr = &d65
+};
+
 double material_get_fsr(const struct material *mat, double wl, double t)
 {
         double degrees = t * 180.0 / M_PI;

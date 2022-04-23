@@ -16,6 +16,7 @@ struct ray {
 struct intersect {
         struct fvec3 point;
         struct fvec3 normal;
+        double distance;
         double u;
         double v;
 };

@@ -43,7 +43,7 @@ bool ray_intersect_with_sphere(struct intersect *intersect,
 
         /* 6. calculate intersection distance */
         double t;
-        if (!in_sphere) {
+        if (in_sphere) {
                 t = tca + sqrt(t2hc);
         } else {
                 t = tca - sqrt(t2hc);
@@ -51,6 +51,7 @@ bool ray_intersect_with_sphere(struct intersect *intersect,
 
         /* 7. find intersection point */
         ray_get_point(&intersect->point, ray, t);
+        intersect->distance = t;
 
         /* 8. find intersection normal */
         double sri = 1.0 / sphere->radius;
@@ -93,6 +94,7 @@ bool ray_intersect_with_plane(struct intersect *intersect,
 
         /* 3. compute intersection point */
         ray_get_point(&intersect->point, ray, t);
+        intersect->distance = t;
 
         /* 4. compare v0 to zero and reverse normal */
         if (vd >= 0.0) {

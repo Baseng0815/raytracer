@@ -77,7 +77,7 @@ void fvec3_cross(struct fvec3 *out,
 {
         out->x = vec1->y * vec2->z - vec1->x * vec2->y;
         out->y = vec1->z * vec2->x - vec1->x * vec2->z;
-        out->y = vec1->x * vec2->y - vec1->y * vec2->x;
+        out->z = vec1->x * vec2->y - vec1->y * vec2->x;
 }
 
 void fvec3_negate(struct fvec3 *out,

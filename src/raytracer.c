@@ -77,9 +77,9 @@ static void solve_rendering_equation(struct spectrum *ray_color,
         const struct sphere *closest_sphere = NULL;
 
         // find closest intersection point
-        for (size_t i = 0; i < scene->sphere_count; i++) {
+        for (size_t spherei = 0; spherei < scene->sphere_count; spherei++) {
                 struct intersect intersect;
-                const struct sphere *s = &scene->spheres[i];
+                const struct sphere *s = &scene->spheres[spherei];
                 if (ray_intersect_with_sphere(&intersect, ray, s)) {
                         struct fvec3 d;
                         fvec3_sub(&d, &intersect.point, &ray->origin);
@@ -98,10 +98,46 @@ static void solve_rendering_equation(struct spectrum *ray_color,
                 return;
         }
 
-        // shadow rays to light sources
-        for (size_t i = 0; i < scene->light_count; i++) {
-                struct ray ray;
-                fvec3_mult(&ray.origin, &closest_intersect.normal, 0.0001);
-                fvec3_add(&ray.origin, &ray.origin, &closest_intersect.point);
+        // color from illumination sources
+        struct ray light_ray;
+        fvec3_mult(&light_ray.origin, &closest_intersect.normal, 0.0001);
+        fvec3_add(&light_ray.origin, &light_ray.origin,
+                  &closest_intersect.point);
+
+        // diffuse reflection
+        struct spectrum idr = { .values = { 0.0 } };
+        for (size_t lighti = 0; lighti < scene->light_count; lighti++) {
+                const struct light *light = &scene->lights[lighti];
+                fvec3_sub(&light_ray.direction, &light->position,
+                          &light_ray.origin);
+                double len_squared = fvec3_len_squared(&light_ray.direction);
+                fvec3_normalize(&light_ray.direction, &light_ray.direction);
+
+                bool is_visible = true;
+                for (size_t spherei = 0;
+                     spherei < scene->sphere_count;
+                     spherei++) {
+                        struct intersect intersect;
+                        const struct sphere *sphere = &scene->spheres[spherei];
+                        if (ray_intersect_with_sphere(&intersect, &light_ray,
+                                                      sphere)) {
+                                if (intersect.distance * intersect.distance < len_squared) {
+                                        is_visible = false;
+                                        break;
+                                }
+                        }
+                }
+
+                if (is_visible) {
+                        double factor = fmax(fvec3_dot(&closest_intersect.normal,
+                                                       &light_ray.direction), 0.0);
+                        struct spectrum color;
+                        spectrum_multiply(&color, light->spectrum,
+                                          closest_sphere->material->fdr);
+                        spectrum_fmultiply(&color, &color, factor);
+                        spectrum_add(&idr, &idr, &color);
+                }
         }
+
+        *ray_color = idr;
 }

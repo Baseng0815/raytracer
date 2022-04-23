@@ -9,6 +9,7 @@ struct material {
 };
 
 extern struct material mat_1;
+extern struct material mat_white;
 
 // get the specular reflection curve at a certain wavelength and angle ([0;pi/2])
 double material_get_fsr(const struct material*, double, double);

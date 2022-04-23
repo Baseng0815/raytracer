@@ -8,14 +8,14 @@
 
 struct spectrum d65 = {
         .values = {
-                .8275, .9149, .9343, .8668, 1.0486,
+                0.8275, 0.9149, 0.9343, 0.8668, 1.0486,
                 1.1701, 1.1781, 1.1486, 1.1592, 1.0881,
                 1.0935, 1.0780, 1.0479, 1.0769, 1.0441,
-                1.0405, 1.000, .9633, .9579, .8869,
-                .9001, .8960, .8770, .8329, .8370,
-                .8003, .8021, .8228, .7828, .6972,
-                .7161, .7435, .6160, .6989, .7509,
-                .6359, .4642, .6681, .6338, .6430
+                1.0405, 1.0000, 0.9633, 0.9579, 0.8869,
+                0.9001, 0.8960, 0.8770, 0.8329, 0.8370,
+                0.8003, 0.8021, 0.8228, 0.7828, 0.6972,
+                0.7161, 0.7435, 0.6160, 0.6989, 0.7509,
+                0.6359, 0.4642, 0.6681, 0.6338, 0.6430
         }
 };
 
@@ -26,6 +26,7 @@ struct spectrum z31 = {};
 struct spectrum spectrum_reddish = {};
 struct spectrum spectrum_greenish = {};
 struct spectrum spectrum_blueish = {};
+struct spectrum spectrum_dark = {};
 
 static struct fmat3 xyztorgb = {
         .v = {
@@ -47,6 +48,7 @@ void color_build_tables(void)
                 spectrum_reddish.values[i] = exp(-pow(wl - 650.0, 2.0) / 1000.0);
                 spectrum_greenish.values[i] = exp(-pow(wl - 500.0, 2.0) / 1000.0);
                 spectrum_blueish.values[i] = exp(-pow(wl - 450, 2.0) / 1000.0);
+                spectrum_dark.values[i] = 0.1;
         }
 }
 

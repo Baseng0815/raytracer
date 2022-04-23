@@ -19,6 +19,7 @@ extern struct spectrum z31;
 extern struct spectrum spectrum_reddish;
 extern struct spectrum spectrum_greenish;
 extern struct spectrum spectrum_blueish;
+extern struct spectrum spectrum_dark;
 
 void color_build_tables(void);
 void spectrum_set_intensity(struct spectrum*, double, double);

@@ -3,7 +3,7 @@
 This program offers implementations of multiple algorithms as presented in
 ["An Introduction To Ray Tracing"](http://bit.ly/AITRT).
 
-![]('./image.jpg')
+![](./image.jpg)
 
 ## Dependencies
 
